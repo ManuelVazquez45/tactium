@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Equipo;
+use App\Policies\EquipoPolicy;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->registerPolicies();
+    }
+
+    protected function registerPolicies()
+    {
+        \Illuminate\Support\Facades\Gate::policy(Equipo::class, EquipoPolicy::class);
     }
 }

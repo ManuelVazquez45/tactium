@@ -34,17 +34,18 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'string', 'in:admin,coach,player'], // Validación del rol [3]
+            'role' => ['required', 'string', 'in:admin,entrenador,jugador'], // Validación del rol
         ]);
 
-        $user = User::create([
+  $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role, // Guardamos el rol en la BD
+            'role' => $request->role,
+            'email_verified_at' => now(), // <-- Añade esta línea
         ]);
 
-        event(new Registered($user));
+        //event(new Registered($user));
 
         Auth::login($user);
 

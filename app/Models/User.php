@@ -2,49 +2,60 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
         'role',
+        'email_verified_at',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Relación con equipos.
+     * CORRECCIÓN: Se cambió 'status' por 'estado' en el withPivot.
+     */
+    public function equipos(): BelongsToMany
+    {
+        return $this->belongsToMany(Equipo::class, 'team_user')
+            ->withPivot('estado')
+            ->withTimestamps();
+    }
+
+    /**
+     * Verificación de equipo aceptado.
+     * CORRECCIÓN: Se ha cambiado la lógica para que funcione con el nuevo campo 'estado'.
+     * Devuelve true si el usuario tiene al menos un equipo con estado 'aprobado'.
+     */
+    public function equipoAceptado()
+    {
+        return $this->equipos()->wherePivot('estado', 'aprobado')->exists();
+    }
+
+    public function primerEquipoAceptado()
+    {
+        return $this->equipos()->wherePivot('estado', 'aprobado')->first();
     }
 }
