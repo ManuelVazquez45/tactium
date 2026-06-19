@@ -22,7 +22,7 @@ class JugadorController extends Controller
         $validated = request()->validate([
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
-            'email' => 'required|email|unique:jugadors',
+            'email' => 'required|email|unique:jugadores',
             'numero_camiseta' => 'nullable|string|max:3',
             'posicion' => 'nullable|string|max:50',
             'fecha_nacimiento' => 'nullable|date',
@@ -30,7 +30,7 @@ class JugadorController extends Controller
 
         $equipo->jugadores()->create($validated);
 
-        return redirect()->route('equipos.show', $equipo)
+        return redirect()->route('entrenador.dashboard', $equipo)
             ->with('success', 'Jugador agregado correctamente.');
     }
 
@@ -56,7 +56,7 @@ class JugadorController extends Controller
         $validated = request()->validate([
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
-            'email' => 'required|email|unique:jugadors,email,' . $jugador->id,
+            'email' => 'required|email|unique:jugadores,email,' . $jugador->id,
             'numero_camiseta' => 'nullable|string|max:3',
             'posicion' => 'nullable|string|max:50',
             'fecha_nacimiento' => 'nullable|date',
@@ -64,7 +64,7 @@ class JugadorController extends Controller
 
         $jugador->update($validated);
 
-        return redirect()->route('equipos.show', $equipo)
+        return redirect()->route('entrenador.dashboard', $equipo)
             ->with('success', 'Jugador actualizado correctamente.');
     }
 
@@ -78,7 +78,7 @@ class JugadorController extends Controller
 
         $jugador->delete();
 
-        return redirect()->route('equipos.show', $equipo)
+        return redirect()->route('entrenador.dashboard', $equipo)
             ->with('success', 'Jugador eliminado correctamente.');
     }
 }

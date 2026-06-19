@@ -36,11 +36,7 @@
                             <h3 class="text-lg font-bold text-white uppercase tracking-widest text-green-400">
                                 👥 Jugadores_Activos
                             </h3>
-                            <div class="relative">
-                                <input type="text" id="buscador-jugadores" placeholder="BUSCAR JUGADOR..."
-                                       class="bg-[#0B1220] border border-blue-500/50 text-blue-400 text-xs px-4 py-2 focus:ring-blue-500 focus:border-blue-500 uppercase font-mono placeholder-blue-700">
-                                <span class="absolute right-2 top-2 text-[8px] text-blue-500 animate-pulse">AJAX_READY</span>
-                            </div>
+
                         </div>
 
                         @foreach($equiposAprobados as $equipo)

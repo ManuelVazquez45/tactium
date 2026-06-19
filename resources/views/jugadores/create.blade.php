@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Agregar Jugador - {{ $equipo->nombre }}
             </h2>
-            <a href="{{ route('equipos.show', $equipo) }}" class="text-gray-600 hover:text-gray-900">
+            <a href="{{ route('entrenador.dashboard', $equipo) }}" class="text-gray-600 hover:text-gray-900">
                 ← Volver
             </a>
         </div>
@@ -74,7 +74,7 @@
                             <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
                                 Agregar Jugador
                             </button>
-                            <a href="{{ route('equipos.show', $equipo) }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                            <a href="{{ route('entrenador.dashboard', $equipo) }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
                                 Cancelar
                             </a>
                         </div>

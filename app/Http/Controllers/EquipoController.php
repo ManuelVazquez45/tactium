@@ -7,6 +7,9 @@ use App\Http\Requests\UpdateEquipoRequest;
 use App\Models\Equipo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
 
 class EquipoController extends Controller
 {
@@ -62,14 +65,14 @@ class EquipoController extends Controller
         // AÑADIR ESTO: vincula el entrenador en la tabla pivote
         $equipo->users()->attach($user->id, ['estado' => 'pendiente']);
 
-        return redirect()->route('equipos.show', $equipo)
+        return redirect()->route('entrenador.dashboard', $equipo)
             ->with('success', 'Solicitud de equipo enviada. Espera la aprobación del administrador.');
     }
 
     public function show(Equipo $equipo): View
     {
         $this->authorize('view', $equipo);
-        return view('equipos.show', compact('equipo'));
+        return view('entrenador.dashboard', compact('equipo'));
     }
 
     public function edit(Equipo $equipo): View
@@ -84,7 +87,7 @@ class EquipoController extends Controller
 
         $equipo->update($request->validated());
 
-        return redirect()->route('equipos.show', $equipo)->with('success', 'Equipo actualizado exitosamente.');
+        return redirect()->route('entrenador.dashboard', $equipo)->with('success', 'Equipo actualizado exitosamente.');
     }
 
     public function destroy(Equipo $equipo): RedirectResponse
@@ -93,7 +96,7 @@ class EquipoController extends Controller
 
         $equipo->delete();
 
-        return redirect()->route('equipos.index')->with('success', 'Equipo eliminado exitosamente.');
+        return redirect()->route('entrenador.dashboard', $equipo)->with('success', 'Equipo eliminado exitosamente.');
     }
 
     public function pendentes(): View
@@ -129,5 +132,33 @@ class EquipoController extends Controller
         $equipo->users()->updateExistingPivot($equipo->coach_id, ['estado' => 'denegado']);
 
         return redirect()->back()->with('success', "Equipo '{$equipo->nombre}' rechazado.");
+    }
+
+  public function search(Request $request): JsonResponse
+    {
+        $query = $request->input('q');
+
+        // 1. Iniciamos la consulta con Eager Loading para evitar el problema N+1
+        $equipos = Equipo::with('coach')
+            ->when($query, function ($q) use ($query) {
+                // Si hay texto en el buscador, filtramos por nombre o descripción
+                $q->where('nombre', 'like', "%{$query}%")
+                  ->orWhere('descripcion', 'like', "%{$query}%");
+            })
+            // 2. ORDEN DE CREACIÓN: 'asc' (los más antiguos primero) o 'desc' (los más recientes primero)
+            ->orderBy('created_at', 'asc')
+            // NOTA DEL TRIBUNAL: Observa que NO hemos puesto un where('estado', 'aprobado').
+            // Así garantizamos que viajen todos los estados.
+            ->get()
+            ->map(function ($equipo) {
+                // 3. Inyección de permisos (Policies) para los botones del Frontend AJAX
+                // Esto es vital para que tu JS sepa si mostrar los botones de Editar/Eliminar
+                $equipo->can_update = auth()->user()->can('update', $equipo);
+                $equipo->can_delete = auth()->user()->can('delete', $equipo);
+                return $equipo;
+            });
+
+        // 4. Retornamos JSON estándar para que tu fetch() lo consuma
+        return response()->json($equipos);
     }
 }

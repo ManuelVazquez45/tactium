@@ -13,16 +13,18 @@ class EquipoPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role === 'admin' || $user->role === 'entrenador';
+        // Todos los roles registrados pueden listar equipos
+        return true;
     }
 
     /**
      * Determine whether the user can view the model.
      */
     // app/Policies/EquipoPolicy.php
-    public function view(User $user, Equipo $equipo)
+    public function view(User $user, Equipo $equipo): bool
     {
-        return true; // O tu lógica de permisos. Sin este archivo, el controlador fallará.
+        // Todos pueden ver el detalle
+        return true;
     }
 
     /**
@@ -30,7 +32,8 @@ class EquipoPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role === 'admin' || $user->role === 'entrenador';
+        // Solo administradores y entrenadores pueden crear
+        return in_array($user->role, ['admin', 'entrenador']);
     }
 
     /**
@@ -38,15 +41,14 @@ class EquipoPolicy
      */
     public function update(User $user, Equipo $equipo): bool
     {
-        return $user->role === 'admin' || $user->id === $equipo->coach_id;
+        // Administrador tiene control total. El Entrenador solo si es el dueño (coach_id).
+        return $user->role === 'admin' || $user->id === (int)$equipo->coach_id;
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete(User $user, Equipo $equipo): bool
     {
-        return $user->role === 'admin' || $user->id === $equipo->coach_id;
+        // Administrador tiene control total. El Entrenador solo si es el dueño (coach_id).
+        return $user->role === 'admin' || $user->id === (int)$equipo->coach_id;
     }
 
     /**

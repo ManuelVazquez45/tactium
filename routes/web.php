@@ -4,7 +4,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EntrenadorDashboardController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request; // <-- AÑADIDO: Necesario para el guardián
 
 Route::get('/', function () {
     return view('welcome');
