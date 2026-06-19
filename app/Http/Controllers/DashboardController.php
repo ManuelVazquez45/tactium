@@ -13,31 +13,31 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
 
-        // 1. Control de Roles (Aceptable, aunque idealmente debe apoyarse en Middleware)
         if ($user->role === 'entrenador') {
             return redirect()->route('entrenador.dashboard');
         }
 
-        // 2. KPIs Generales para el Admin
-        $equiposCount = Equipo::where('estado', 'aprobado')->count();
-        $pendientesCount = Equipo::where('estado', 'pendiente')->count();
-        $rechazadosCount = Equipo::where('estado', 'denegado')->count();
+        if ($user->role === 'jugador') {
+            $equipos = $user->equipos()->where('team_user.estado', 'aprobado')->get();
+            return view('dashboard', compact('equipos'));
+        }
+
+        $equiposCount = Equipo::where('status', 'approved')->count();
+        $pendientesCount = Equipo::where('status', 'pending')->count();
+        $rechazadosCount = Equipo::where('status', 'rejected')->count();
         $entrenadoresCount = User::where('role', 'entrenador')->count();
 
-        // 3. NUEVA CONSULTA: Solicitudes de Equipos (Requisito de la nueva tabla)
-        // Usamos Eager Loading con 'with()' para optimizar la carga del usuario relacionado
-        $equiposSolicitados = Equipo::with('coach') // IMPORTANTE: Asegúrate de que la relación en tu modelo Equipo se llame 'entrenador' o cámbialo a 'user'/'coach' según lo tengas definido.
-            ->where('estado', 'pendiente')
-            ->orderBy('created_at', 'asc') // Priorizamos por tiempo de espera (los más antiguos primero)
+        $equiposSolicitados = Equipo::with('coach')
+            ->where('status', 'pending')
+            ->orderBy('created_at', 'asc')
             ->get();
 
-        // 4. Retorno a la vista actualizando el compact
         return view('dashboard', compact(
             'equiposCount',
             'pendientesCount',
             'rechazadosCount',
             'entrenadoresCount',
-            'equiposSolicitados' // Sustituimos 'entrenadores' por la nueva variable
+            'equiposSolicitados'
         ));
     }
 }

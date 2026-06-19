@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Equipo;
 use App\Models\Jugador;
+use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Hash;
 
 class JugadorController extends Controller
 {
@@ -22,7 +24,7 @@ class JugadorController extends Controller
         $validated = request()->validate([
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
-            'email' => 'required|email|unique:jugadores',
+            'email' => 'required|email|unique:jugadores|unique:users',
             'numero_camiseta' => 'nullable|string|max:3',
             'posicion' => 'nullable|string|max:50',
             'fecha_nacimiento' => 'nullable|date',
@@ -30,8 +32,19 @@ class JugadorController extends Controller
 
         $equipo->jugadores()->create($validated);
 
-        return redirect()->route('entrenador.dashboard', $equipo)
-            ->with('success', 'Jugador agregado correctamente.');
+        $password = str()->random(12);
+        $user = User::create([
+            'name' => $validated['nombre'] . ' ' . $validated['apellido'],
+            'email' => $validated['email'],
+            'password' => Hash::make($password),
+            'role' => 'jugador',
+            'email_verified_at' => now(),
+        ]);
+
+        $equipo->users()->attach($user, ['estado' => 'aprobado']);
+
+        return redirect()->route('entrenador.dashboard')
+            ->with('success', "Jugador creado. Email: {$validated['email']}, Contraseña: {$password}");
     }
 
     public function edit(Equipo $equipo, Jugador $jugador): View

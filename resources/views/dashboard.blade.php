@@ -1,5 +1,32 @@
 <x-app-layout>
 
+    @if(auth()->user()->role === 'jugador' && !empty($equipos))
+    <div class="py-10 bg-gray-50 min-h-screen relative">
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-8">
+                <h1 class="text-2xl font-black text-gray-900 uppercase tracking-tight">Mi Equipo</h1>
+            </div>
+
+            @if($equipos->isEmpty())
+                <div class="bg-blue-50 border border-blue-200 p-6 text-center">
+                    <p class="text-gray-700">Aún no has sido asignado a un equipo.</p>
+                </div>
+            @else
+                @foreach($equipos as $equipo)
+                <div class="bg-white border border-gray-200 shadow-sm p-6 mb-6">
+                    <h2 class="text-xl font-bold text-gray-900 mb-2">{{ $equipo->nombre }}</h2>
+                    <p class="text-gray-600 mb-4">{{ $equipo->descripcion }}</p>
+                    <p class="text-sm text-gray-500"><strong>Entrenador:</strong> {{ $equipo->coach->name }}</p>
+                    <a href="{{ route('equipos.show', $equipo) }}" class="inline-block mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded hover:bg-blue-700">
+                        Ver Equipo
+                    </a>
+                </div>
+                @endforeach
+            @endif
+        </div>
+    </div>
+    @else
+
     <div class="py-10 bg-gray-50 min-h-screen relative">
 
         <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -165,6 +192,7 @@
             </div>
         </div>
     </div>
+    @endif
 </x-app-layout>
 
 <x-footer />
