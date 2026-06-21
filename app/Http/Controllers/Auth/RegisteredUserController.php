@@ -28,21 +28,31 @@ class RegisteredUserController extends Controller
      *
      * @throws ValidationException
      */
+    /**
+     * Handle an incoming registration request.
+     *
+     * @throws ValidationException
+     */
     public function store(Request $request): RedirectResponse
     {
+        // 1. Validamos solo los datos seguros aportados por el usuario
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'string', 'in:admin,entrenador,jugador'], // Validación del rol
+            // AUDITORÍA: Eliminamos la validación del 'role'. El usuario público NO elige su rol.
         ]);
 
-  $user = User::create([
+        // 2. Creación segura de la entidad
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
-            'email_verified_at' => now(), // <-- Añade esta línea
+            // AUDITORÍA: Hardcodeamos el rol base. Todo registro público nace como jugador.
+            // *Nota: Verifica si en tu BD (migración) el enum es 'jugador' o 'player'.
+            // Si en BD dice 'player', cambia la palabra abajo.
+            'role' => 'jugador',
+            'email_verified_at' => now(),
         ]);
 
         //event(new Registered($user));

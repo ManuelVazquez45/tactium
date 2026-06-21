@@ -18,12 +18,17 @@ class Jugador extends Model
         'fecha_nacimiento',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'fecha_nacimiento' => 'date',
+        ];
+    }
+
     public function equipo(): BelongsTo
     {
         return $this->belongsTo(Equipo::class);
     }
-
-
 
     public function pagos(): HasMany
     {

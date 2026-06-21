@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // Añadimos el campo de rol como un enumerado [3]
-            $table->enum('role', ['admin', 'coach', 'player'])->default('player')->after('email');
+            $table->enum('role', ['admin', 'entrenador', 'jugador'])->default('jugador')->after('email');
         });
     }
 

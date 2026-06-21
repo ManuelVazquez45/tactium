@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('equipos', function (Blueprint $table) {
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending')->after('descripcion');
+            $table->enum('estado', ['pendiente', 'aprobado', 'denegado'])->default('pendiente')->after('descripcion');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('equipos', function (Blueprint $table) {
-            $table->dropColumn('status');
+            $table->dropColumn('estado');
         });
     }
 };

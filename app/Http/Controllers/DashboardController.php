@@ -22,13 +22,13 @@ class DashboardController extends Controller
             return view('dashboard', compact('equipos'));
         }
 
-        $equiposCount = Equipo::where('status', 'approved')->count();
-        $pendientesCount = Equipo::where('status', 'pending')->count();
-        $rechazadosCount = Equipo::where('status', 'rejected')->count();
+        $equiposCount = Equipo::where('estado', 'aprobado')->count();
+        $pendientesCount = Equipo::where('estado', 'pendiente')->count();
+        $rechazadosCount = Equipo::where('estado', 'denegado')->count();
         $entrenadoresCount = User::where('role', 'entrenador')->count();
 
         $equiposSolicitados = Equipo::with('coach')
-            ->where('status', 'pending')
+            ->where('estado', 'pendiente')
             ->orderBy('created_at', 'asc')
             ->get();
 

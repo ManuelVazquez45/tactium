@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('equipos');
         Schema::enableForeignKeyConstraints();
-
+        
         Schema::create('equipos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');

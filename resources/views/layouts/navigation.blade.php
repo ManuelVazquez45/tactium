@@ -98,6 +98,17 @@
                             <!-- SEPARADOR -->
                             <div class="h-6 w-px bg-blue-500/20 mx-1"></div>
 
+                            <!-- EQUIPO -->
+                            <x-nav-link :href="route('equipos.show', $equipo)" :active="request()->routeIs('equipos.show')"
+                                class="relative group/link px-5 py-2 text-xs font-black uppercase tracking-[0.4em] transition-all border-none">
+                                <span class="{{ request()->routeIs('equipos.show') ? 'text-white' : 'text-white/40 group-hover/link:text-white' }} transition-colors duration-300">
+                                    {{ __('Equipo') }}
+                                </span>
+                                <div class="absolute -bottom-1 left-0 h-[2px] bg-blue-600 shadow-[0_0_20px_#2563eb] transition-all duration-500"
+                                    style="{{ request()->routeIs('equipos.show') ? 'width: 100%; opacity: 1;' : 'width: 0%; opacity: 0;' }}">
+                                </div>
+                            </x-nav-link>
+
                             <!-- ENTRENO -->
                             <x-nav-link :href="route('entrenamientos.index', $equipo)" :active="request()->routeIs('entrenamientos.*')"
                                 class="relative group/link px-5 py-2 text-xs font-black uppercase tracking-[0.4em] transition-all border-none">
@@ -130,6 +141,88 @@
                                     style="{{ request()->routeIs('pagos.*') ? 'width: 100%; opacity: 1;' : 'width: 0%; opacity: 0;' }}">
                                 </div>
                             </x-nav-link>
+                        @else
+                            <div class="h-6 w-px bg-blue-500/20 mx-1"></div>
+                            <span class="text-white/20 text-[9px] px-4 uppercase tracking-[0.2em]">
+                                {{ __('// Equipo Pendiente') }}
+                            </span>
+                        @endif
+                    </div>
+                @endif
+
+                <!-- LINKS JUGADOR -->
+                @if (Auth::check() && Auth::user()->role === 'jugador')
+                    <div class="hidden sm:flex items-center gap-2">
+
+                        @php $equipo = Auth::user()->primerEquipoAceptado(); @endphp
+
+                        @if (!request()->routeIs('equipos.show', 'entrenamientos.*', 'partidos.*', 'pagos.show'))
+                            <!-- INICIO -->
+                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
+                                class="relative group/link px-5 py-2 text-xs font-black uppercase tracking-[0.4em] transition-all border-none">
+                                <span class="{{ request()->routeIs('dashboard') ? 'text-white' : 'text-white/40 group-hover/link:text-white' }} transition-colors duration-300">
+                                    {{ __('Inicio') }}
+                                </span>
+                                <div class="absolute -bottom-1 left-0 h-[2px] bg-blue-600 shadow-[0_0_20px_#2563eb] transition-all duration-500"
+                                    style="{{ request()->routeIs('dashboard') ? 'width: 100%; opacity: 1;' : 'width: 0%; opacity: 0;' }}">
+                                </div>
+                            </x-nav-link>
+                        @endif
+
+                        @if ($equipo)
+                            @if (request()->routeIs('equipos.show', 'entrenamientos.*', 'partidos.*', 'pagos.show'))
+                                <!-- SEPARADOR -->
+                                <div class="h-6 w-px bg-blue-500/20 mx-1"></div>
+                            @endif
+
+                            <!-- EQUIPO -->
+                            <x-nav-link :href="route('equipos.show', $equipo)" :active="request()->routeIs('equipos.show')"
+                                class="relative group/link px-5 py-2 text-xs font-black uppercase tracking-[0.4em] transition-all border-none">
+                                <span class="{{ request()->routeIs('equipos.show') ? 'text-white' : 'text-white/40 group-hover/link:text-white' }} transition-colors duration-300">
+                                    {{ __('Equipo') }}
+                                </span>
+                                <div class="absolute -bottom-1 left-0 h-[2px] bg-blue-600 shadow-[0_0_20px_#2563eb] transition-all duration-500"
+                                    style="{{ request()->routeIs('equipos.show') ? 'width: 100%; opacity: 1;' : 'width: 0%; opacity: 0;' }}">
+                                </div>
+                            </x-nav-link>
+
+                            <!-- ENTRENO -->
+                            <x-nav-link :href="route('entrenamientos.index', $equipo)" :active="request()->routeIs('entrenamientos.*')"
+                                class="relative group/link px-5 py-2 text-xs font-black uppercase tracking-[0.4em] transition-all border-none">
+                                <span class="{{ request()->routeIs('entrenamientos.*') ? 'text-white' : 'text-white/40 group-hover/link:text-white' }} transition-colors duration-300">
+                                    {{ __('Entreno') }}
+                                </span>
+                                <div class="absolute -bottom-1 left-0 h-[2px] bg-blue-600 shadow-[0_0_20px_#2563eb] transition-all duration-500"
+                                    style="{{ request()->routeIs('entrenamientos.*') ? 'width: 100%; opacity: 1;' : 'width: 0%; opacity: 0;' }}">
+                                </div>
+                            </x-nav-link>
+
+                            <!-- PARTIDO -->
+                            <x-nav-link :href="route('partidos.index', $equipo)" :active="request()->routeIs('partidos.*')"
+                                class="relative group/link px-5 py-2 text-xs font-black uppercase tracking-[0.4em] transition-all border-none">
+                                <span class="{{ request()->routeIs('partidos.*') ? 'text-white' : 'text-white/40 group-hover/link:text-white' }} transition-colors duration-300">
+                                    {{ __('Partido') }}
+                                </span>
+                                <div class="absolute -bottom-1 left-0 h-[2px] bg-blue-600 shadow-[0_0_20px_#2563eb] transition-all duration-500"
+                                    style="{{ request()->routeIs('partidos.*') ? 'width: 100%; opacity: 1;' : 'width: 0%; opacity: 0;' }}">
+                                </div>
+                            </x-nav-link>
+
+                            <!-- INSCRIPCIÓN -->
+                            @php
+                                $jugador = $equipo->jugadores()->where('email', auth()->user()->email)->first();
+                            @endphp
+                            @if ($jugador)
+                            <x-nav-link :href="route('pagos.show', [$equipo, $jugador])" :active="request()->routeIs('pagos.show')"
+                                class="relative group/link px-5 py-2 text-xs font-black uppercase tracking-[0.4em] transition-all border-none">
+                                <span class="{{ request()->routeIs('pagos.show') ? 'text-white' : 'text-white/40 group-hover/link:text-white' }} transition-colors duration-300">
+                                    {{ __('Inscripción') }}
+                                </span>
+                                <div class="absolute -bottom-1 left-0 h-[2px] bg-blue-600 shadow-[0_0_20px_#2563eb] transition-all duration-500"
+                                    style="{{ request()->routeIs('pagos.show') ? 'width: 100%; opacity: 1;' : 'width: 0%; opacity: 0;' }}">
+                                </div>
+                            </x-nav-link>
+                            @endif
                         @else
                             <div class="h-6 w-px bg-blue-500/20 mx-1"></div>
                             <span class="text-white/20 text-[9px] px-4 uppercase tracking-[0.2em]">
@@ -206,9 +299,13 @@
                     {{ __('// Entrenadores') }}
                 </x-responsive-nav-link>
             @endif
-            @if(Auth::check() && Auth::user()->role === 'entrenador')
+            @if(Auth::check() && Auth::user()->role === 'jugador')
                 @php $equipo = Auth::user()->primerEquipoAceptado(); @endphp
                 @if($equipo)
+                    <x-responsive-nav-link :href="route('equipos.show', $equipo)" :active="request()->routeIs('equipos.show')"
+                        class="block text-xs font-bold uppercase tracking-[0.4em] text-white border-none py-3">
+                        {{ __('// Equipo') }}
+                    </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('entrenamientos.index', $equipo)" :active="request()->routeIs('entrenamientos.*')"
                         class="block text-xs font-bold uppercase tracking-[0.4em] text-white border-none py-3">
                         {{ __('// Entreno') }}
@@ -217,10 +314,15 @@
                         class="block text-xs font-bold uppercase tracking-[0.4em] text-white border-none py-3">
                         {{ __('// Partido') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('pagos.index', $equipo)" :active="request()->routeIs('pagos.*')"
+                    @php
+                        $jugador = $equipo->jugadores()->where('email', auth()->user()->email)->first();
+                    @endphp
+                    @if($jugador)
+                    <x-responsive-nav-link :href="route('pagos.show', [$equipo, $jugador])" :active="request()->routeIs('pagos.show')"
                         class="block text-xs font-bold uppercase tracking-[0.4em] text-white border-none py-3">
                         {{ __('// Inscripción') }}
                     </x-responsive-nav-link>
+                    @endif
                 @endif
             @endif
         </div>

@@ -1,5 +1,4 @@
 <x-app-layout>
-
     @if(auth()->user()->role === 'jugador' && !empty($equipos))
     <div class="py-10 bg-gray-50 min-h-screen relative">
         <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">

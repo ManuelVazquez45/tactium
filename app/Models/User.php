@@ -51,11 +51,17 @@ class User extends Authenticatable
      */
     public function equipoAceptado()
     {
+        if ($this->role === 'entrenador') {
+            return Equipo::where('coach_id', $this->id)->where('estado', 'aprobado')->exists();
+        }
         return $this->equipos()->wherePivot('estado', 'aprobado')->exists();
     }
 
     public function primerEquipoAceptado()
     {
+        if ($this->role === 'entrenador') {
+            return Equipo::where('coach_id', $this->id)->where('estado', 'aprobado')->first();
+        }
         return $this->equipos()->wherePivot('estado', 'aprobado')->first();
     }
 }

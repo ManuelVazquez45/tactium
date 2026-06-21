@@ -1,93 +1,124 @@
 <x-app-layout>
 
-    <div class="bg-[#0B1220] min-h-screen text-gray-300">
-        {{-- Header integrado para evitar saltos visuales --}}
-        <div class=" bg-[#0B1220]/50 backdrop-blur-md">
-            <div class="max-w-7xl mx-auto px-8 py-8 flex justify-between items-center">
-                <h2 class="font-oxanium font-bold text-xl text-white uppercase tracking-[0.2em] italic">
-                    Pagos de <span class="text-blue-400">{{ $jugador->nombre }} {{ $jugador->apellido }}</span>
-                </h2>
-                <a href="{{ route('pagos.index', $equipo) }}"
-                   class="text-[10px] font-bold uppercase tracking-[0.3em] text-blue-400 hover:text-white border border-blue-500/30 hover:border-blue-400 px-4 py-2 transition-all">
-                    ← Volver_al_sistema
+    <div class="py-10 bg-gray-50 min-h-screen relative font-oxanium">
+
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+            <!-- BREADCRUMBS -->
+            <nav class="flex mb-8 items-center space-x-2 text-xs uppercase tracking-widest text-gray-400">
+                <a href="{{ route('dashboard') }}" class="hover:text-blue-600 transition-colors">Tactium</a>
+                <span>/</span>
+                <a href="{{ route('pagos.index', $equipo) }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">Inscripciones</a>
+                <span>/</span>
+                <span class="text-gray-800 font-bold">{{ $jugador->nombre }} {{ $jugador->apellido }}</span>
+            </nav>
+
+            <!-- CABECERA -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-gray-900 uppercase tracking-tight italic">
+                        Pagos <span class="text-blue-600">// {{ $jugador->nombre }} {{ $jugador->apellido }}</span>
+                    </h2>
+                </div>
+                <a href="{{ auth()->user()->role === 'jugador' ? route('equipos.show', $equipo) : route('pagos.index', $equipo) }}"
+                    class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 text-xs font-bold uppercase tracking-widest bg-white hover:bg-gray-50 transition-all shadow-sm whitespace-nowrap">
+                    ← Volver
                 </a>
             </div>
-        </div>
-
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 py-12 space-y-6">
 
             @if (session('success'))
-                <div class="bg-blue-900/20 border border-blue-500/50 text-blue-200 px-4 py-3 rounded-sm backdrop-blur-sm">
+                <div class="bg-green-50 border border-green-300 text-green-800 px-4 py-3 mb-6 text-sm font-bold uppercase tracking-widest">
                     {{ session('success') }}
                 </div>
             @endif
 
-            {{-- Resumen HUD Homogéneo --}}
-            <div class="grid grid-cols-3 gap-4">
-                <div class="bg-[#0B1220] border border-green-500/20 rounded-sm px-4 py-5 text-center">
-                    <p class="text-[10px] text-gray-500 uppercase tracking-widest">Total pagado</p>
-                    <p class="text-2xl font-bold text-green-400 font-oxanium">{{ number_format($totalPagado, 2) }} €</p>
+            <!-- KPIs RESUMEN -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                <div class="bg-white border border-gray-200 shadow-sm p-6 relative hover:border-green-400 hover:shadow-md transition-all">
+                    <div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-green-500"></div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-green-600 mb-2">Total Pagado</p>
+                    <p class="text-3xl font-black text-gray-900">{{ number_format($totalPagado, 2) }} <span class="text-lg text-green-600">€</span></p>
                 </div>
-                <div class="bg-[#0B1220] border border-yellow-500/20 rounded-sm px-4 py-5 text-center">
-                    <p class="text-[10px] text-gray-500 uppercase tracking-widest">Pendiente</p>
-                    <p class="text-2xl font-bold text-yellow-400 font-oxanium">{{ number_format($totalPendiente, 2) }} €</p>
+                <div class="bg-white border border-gray-200 shadow-sm p-6 relative hover:border-yellow-400 hover:shadow-md transition-all">
+                    <div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-yellow-500"></div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-yellow-600 mb-2">Pendiente</p>
+                    <p class="text-3xl font-black text-gray-900">{{ number_format($totalPendiente, 2) }} <span class="text-lg text-yellow-600">€</span></p>
                 </div>
-                <div class="bg-[#0B1220] border border-blue-500/20 rounded-sm px-4 py-5 text-center">
-                    <p class="text-[10px] text-gray-500 uppercase tracking-widest">Total registros</p>
-                    <p class="text-2xl font-bold text-blue-400 font-oxanium">{{ $pagos->count() }}</p>
+                <div class="bg-white border border-gray-200 shadow-sm p-6 relative hover:border-blue-400 hover:shadow-md transition-all">
+                    <div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-blue-500"></div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-2">Total Registros</p>
+                    <p class="text-3xl font-black text-gray-900">{{ $pagos->count() }}</p>
                 </div>
             </div>
 
-            {{-- Tabla de pagos Táctica sin fondos blancos --}}
-            <div class="bg-[#0B1220] border border-blue-500/20 rounded-sm overflow-hidden">
-                <div class="px-4 py-5 sm:p-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-oxanium text-white uppercase tracking-wider">Historial de pagos</h3>
-                        <a href="{{ route('pagos.create', $equipo) }}"
-                            class="text-blue-400 hover:text-white border border-blue-500/30 px-3 py-1 rounded text-xs transition-all">+ Añadir pago</a>
+            <!-- TABLA PAGOS -->
+            <div class="bg-white border border-gray-200 shadow-sm overflow-hidden relative group">
+                <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-blue-500 opacity-30 group-hover:opacity-100 transition-opacity"></div>
+                <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-blue-500 opacity-30 group-hover:opacity-100 transition-opacity"></div>
+
+                <div class="p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-black text-gray-900 uppercase tracking-tight italic">
+                            Historial <span class="text-blue-600">// Pagos</span>
+                        </h3>
+                        @can('update', $equipo)
+                            <a href="{{ route('pagos.create', $equipo) }}"
+                                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm">
+                                + Añadir Pago
+                            </a>
+                        @endcan
                     </div>
 
                     @if ($pagos->isEmpty())
-                        <p class="text-gray-600 text-sm italic text-center py-6">Sin registros de pagos.</p>
+                        <p class="text-gray-400 text-sm italic text-center py-8">Sin registros de pagos para este jugador.</p>
                     @else
-                        <table class="w-full text-sm text-gray-400">
-                            <thead class="border-b border-blue-500/10">
-                                <tr>
-                                    <th class="px-4 py-3 text-left font-oxanium uppercase text-blue-500/70">Concepto</th>
-                                    <th class="px-4 py-3 text-left font-oxanium uppercase text-blue-500/70">Importe</th>
-                                    <th class="px-4 py-3 text-left font-oxanium uppercase text-blue-500/70">Fecha</th>
-                                    <th class="px-4 py-3 text-left font-oxanium uppercase text-blue-500/70">Estado</th>
-                                    <th class="px-4 py-3 text-right font-oxanium uppercase text-blue-500/70">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-blue-500/5">
-                                @foreach ($pagos as $pago)
-                                    <tr class="hover:bg-blue-900/10 transition-colors">
-                                        <td class="px-4 py-3 text-white">{{ $pago->concepto }}</td>
-                                        <td class="px-4 py-3 font-mono text-gray-300">{{ number_format($pago->importe, 2) }} €</td>
-                                        <td class="px-4 py-3">{{ $pago->fecha_pago ? $pago->fecha_pago->format('d/m/Y') : '-' }}</td>
-                                        <td class="px-4 py-3">
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider
-                                                @if ($pago->estado === 'pagado') border border-green-500/20 text-green-500
-                                                @elseif($pago->estado === 'pendiente') border border-yellow-500/20 text-yellow-500
-                                                @else border border-red-500/20 text-red-500 @endif">
-                                                {{ ucfirst(str_replace('_', ' ', $pago->estado)) }}
-                                            </span>
-                                        </td>
-                                        <td class="px-4 py-3 text-right space-x-2">
-                                            <a href="{{ route('pagos.edit', [$equipo, $pago]) }}" class="text-blue-400 hover:text-white text-xs">Editar</a>
-                                            <form action="{{ route('pagos.destroy', [$equipo, $pago]) }}" method="POST" class="inline" onsubmit="return confirm('¿Eliminar?')">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="text-red-500 hover:text-red-400 text-xs">Borrar</button>
-                                            </form>
-                                        </td>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="text-blue-600 border-b-2 border-gray-200">
+                                        <th class="pb-4 text-xs font-bold uppercase tracking-widest italic">Concepto</th>
+                                        <th class="pb-4 text-xs font-bold uppercase tracking-widest italic">Importe</th>
+                                        <th class="pb-4 text-xs font-bold uppercase tracking-widest italic">Fecha</th>
+                                        <th class="pb-4 text-xs font-bold uppercase tracking-widest italic">Estado</th>
+                                        <th class="pb-4 text-xs font-bold uppercase tracking-widest italic text-right">Acciones</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    @foreach ($pagos as $pago)
+                                        <tr class="hover:bg-blue-50 transition-colors">
+                                            <td class="py-5 text-sm font-bold text-gray-900">{{ $pago->concepto }}</td>
+                                            <td class="py-5 font-mono font-black text-sm text-gray-900">{{ number_format($pago->importe, 2) }} €</td>
+                                            <td class="py-5 text-sm text-gray-500">{{ $pago->fecha_pago ? $pago->fecha_pago->format('d/m/Y') : '-' }}</td>
+                                            <td class="py-5">
+                                                <span class="inline-flex items-center px-3 py-1 border text-xs font-bold uppercase tracking-widest
+                                                    @if ($pago->estado === 'pagado') border-green-400 bg-green-50 text-green-700
+                                                    @elseif($pago->estado === 'pendiente') border-yellow-400 bg-yellow-50 text-yellow-700
+                                                    @else border-red-400 bg-red-50 text-red-700
+                                                    @endif">
+                                                    {{ ucfirst(str_replace('_', ' ', $pago->estado)) }}
+                                                </span>
+                                            </td>
+                                            <td class="py-5 text-right space-x-4">
+                                                @can('update', $equipo)
+                                                    <a href="{{ route('pagos.edit', [$equipo, $pago]) }}"
+                                                        class="text-green-600 hover:text-green-800 font-bold text-xs uppercase transition-colors">Editar</a>
+                                                    <form action="{{ route('pagos.destroy', [$equipo, $pago]) }}" method="POST" class="inline" onsubmit="return confirm('¿Eliminar pago?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="text-red-600 hover:text-red-800 font-bold text-xs uppercase transition-colors">Borrar</button>
+                                                    </form>
+                                                @endcan
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     @endif
                 </div>
             </div>
         </div>
     </div>
 </x-app-layout>
+<x-footer />

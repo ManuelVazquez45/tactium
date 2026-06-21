@@ -9,13 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+ public function up(): void
     {
         Schema::create('team_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            // Usamos 'equipos' porque tu error SQL indica que esa es la tabla, no 'teams'
             $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
+
+            // AUDITORÍA: Columna obligatoria para la lógica de negocio de tu app
+            $table->string('estado')->default('pendiente');
+
             $table->timestamps();
         });
     }

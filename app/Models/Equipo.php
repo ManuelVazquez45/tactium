@@ -13,7 +13,8 @@ class Equipo extends Model
         'nombre',
         'descripcion',
         'coach_id',
-        'status',
+        'estado',
+        'cuota',
     ];
 
     public function coach(): BelongsTo
@@ -36,6 +37,11 @@ class Equipo extends Model
     public function entrenamientos(): HasMany
     {
         return $this->hasMany(Entrenamiento::class);
+    }
+
+    public function partidos(): HasMany
+    {
+        return $this->hasMany(Partido::class);
     }
 }
 

@@ -30,8 +30,4 @@ class Partido extends Model
     {
         return $this->belongsTo(Equipo::class);
     }
-    public function partidos(): HasMany
-    {
-        return $this->hasMany(Partido::class);
-    }
 }

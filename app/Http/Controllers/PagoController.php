@@ -15,6 +15,11 @@ class PagoController extends Controller
     {
         $this->authorize('view', $equipo);
 
+        // Solo entrenadores pueden ver el índice de pagos
+        if (auth()->user()->role === 'jugador') {
+            abort(403, 'No tienes permiso para ver el sistema de pagos.');
+        }
+
         $jugadores = $equipo->jugadores()
             ->withCount('pagos')
             ->withSum(['pagos as total_pagado' => function ($q) {
@@ -28,6 +33,13 @@ class PagoController extends Controller
     public function show(Equipo $equipo, Jugador $jugador): View
     {
         $this->authorize('view', $equipo);
+
+        // Si es jugador, solo puede ver su propia inscripción
+        if (auth()->user()->role === 'jugador') {
+            if (auth()->user()->email !== $jugador->email) {
+                abort(403, 'No puedes ver la inscripción de otro jugador.');
+            }
+        }
 
         $pagos          = $jugador->pagos()->orderBy('fecha_pago', 'desc')->get();
         $totalPagado    = $pagos->where('estado', 'pagado')->sum('importe');
