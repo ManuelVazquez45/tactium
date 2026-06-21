@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\Hash;
 
 class JugadorController extends Controller
 {
-    public function create(Equipo $equipo): View
+    public function crear(Equipo $equipo): View
     {
         $this->authorize('update', $equipo);
         return view('jugadores.create', compact('equipo'));
     }
 
-    public function store(Equipo $equipo): RedirectResponse
+    public function guardar(Equipo $equipo): RedirectResponse
     {
         $this->authorize('update', $equipo);
 
@@ -47,7 +47,7 @@ class JugadorController extends Controller
             ->with('success', "Jugador creado. Email: {$validated['email']}, Contraseña: {$password}");
     }
 
-    public function edit(Equipo $equipo, Jugador $jugador): View
+    public function editar(Equipo $equipo, Jugador $jugador): View
     {
         $this->authorize('update', $equipo);
 
@@ -58,7 +58,7 @@ class JugadorController extends Controller
         return view('jugadores.edit', compact('equipo', 'jugador'));
     }
 
-    public function update(Equipo $equipo, Jugador $jugador): RedirectResponse
+    public function actualizar(Equipo $equipo, Jugador $jugador): RedirectResponse
     {
         $this->authorize('update', $equipo);
 
@@ -81,7 +81,7 @@ class JugadorController extends Controller
             ->with('success', 'Jugador actualizado correctamente.');
     }
 
-    public function destroy(Equipo $equipo, Jugador $jugador): RedirectResponse
+    public function eliminar(Equipo $equipo, Jugador $jugador): RedirectResponse
     {
         $this->authorize('delete', $equipo);
 
@@ -95,3 +95,4 @@ class JugadorController extends Controller
             ->with('success', 'Jugador eliminado correctamente.');
     }
 }
+

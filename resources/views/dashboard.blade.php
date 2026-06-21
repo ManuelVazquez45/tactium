@@ -16,7 +16,7 @@
                     <h2 class="text-xl font-bold text-gray-900 mb-2">{{ $equipo->nombre }}</h2>
                     <p class="text-gray-600 mb-4">{{ $equipo->descripcion }}</p>
                     <p class="text-sm text-gray-500"><strong>Entrenador:</strong> {{ $equipo->coach->name }}</p>
-                    <a href="{{ route('equipos.show', $equipo) }}" class="inline-block mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded hover:bg-blue-700">
+                    <a href="{{ route('equipos.ver', $equipo) }}" class="inline-block mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded hover:bg-blue-700">
                         Ver Equipo
                     </a>
                 </div>
@@ -50,7 +50,7 @@
 
             <!-- KPIs -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-                <a href="{{ route('equipos.index') }}" class="block hover:scale-105 transition-transform">
+                <a href="{{ route('equipos.listar') }}" class="block hover:scale-105 transition-transform">
                     <div
                         class="bg-white border border-gray-200 shadow-sm p-6 relative hover:border-green-400 hover:shadow-md transition-all">
                         <div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-green-500"></div>
@@ -59,7 +59,7 @@
                         <h4 class="text-4xl text-gray-900 font-black">{{ $equiposCount ?? 0 }}</h4>
                     </div>
                 </a>
-                <a href="{{ route('entrenadores.index') }}" class="block hover:scale-105 transition-transform">
+                <a href="{{ route('entrenadores.listar') }}" class="block hover:scale-105 transition-transform">
                     <div
                         class="bg-white border border-gray-200 shadow-sm p-6 relative hover:border-blue-400 hover:shadow-md transition-all">
                         <div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-blue-500"></div>
@@ -78,7 +78,7 @@
                         {{ $pendientesCount ?? 0 }}
                     </h4>
                 </div>
-                <a href="{{ route('equipos.index') }}" class="block hover:scale-105 transition-transform">
+                <a href="{{ route('equipos.listar') }}" class="block hover:scale-105 transition-transform">
                     <div
                         class="bg-white border border-gray-200 shadow-sm p-6 relative hover:border-red-400 hover:shadow-md transition-all cursor-default">
                         <div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-red-500"></div>
@@ -145,7 +145,7 @@
                                             </td>
                                             <td class="py-5 text-right">
                                                 <div class="flex justify-end gap-3">
-                                                    <form action="{{ route('equipos.approve', $equipo) }}"
+                                                    <form action="{{ route('equipos.aprobar', $equipo) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('PATCH')
@@ -154,7 +154,7 @@
                                                             Aprobar
                                                         </button>
                                                     </form>
-                                                    <form action="{{ route('equipos.reject', $equipo) }}"
+                                                    <form action="{{ route('equipos.rechazar', $equipo) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('PATCH')

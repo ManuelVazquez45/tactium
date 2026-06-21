@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePagoRequest;
+use App\Http\Requests\UpdatePagoRequest;
 use App\Models\Equipo;
 use App\Models\Jugador;
 use App\Models\Pago;
@@ -11,11 +13,10 @@ use Illuminate\Http\RedirectResponse;
 
 class PagoController extends Controller
 {
-    public function index(Equipo $equipo): View
+    public function listar(Equipo $equipo): View
     {
         $this->authorize('view', $equipo);
 
-        // Solo entrenadores pueden ver el índice de pagos
         if (auth()->user()->role === 'jugador') {
             abort(403, 'No tienes permiso para ver el sistema de pagos.');
         }
@@ -30,11 +31,10 @@ class PagoController extends Controller
         return view('pagos.index', compact('equipo', 'jugadores'));
     }
 
-    public function show(Equipo $equipo, Jugador $jugador): View
+    public function ver(Equipo $equipo, Jugador $jugador): View
     {
         $this->authorize('view', $equipo);
 
-        // Si es jugador, solo puede ver su propia inscripción
         if (auth()->user()->role === 'jugador') {
             if (auth()->user()->email !== $jugador->email) {
                 abort(403, 'No puedes ver la inscripción de otro jugador.');
@@ -48,34 +48,27 @@ class PagoController extends Controller
         return view('pagos.show', compact('equipo', 'jugador', 'pagos', 'totalPagado', 'totalPendiente'));
     }
 
-    public function create(Equipo $equipo): View
+    public function crear(Equipo $equipo): View
     {
         $this->authorize('update', $equipo);
         $jugadores = $equipo->jugadores()->get();
         return view('pagos.create', compact('equipo', 'jugadores'));
     }
 
-    public function store(Equipo $equipo, Request $request): RedirectResponse
+    public function guardar(Equipo $equipo, StorePagoRequest $request): RedirectResponse
     {
         $this->authorize('update', $equipo);
 
-        $validated = $request->validate([
-            'jugador_id' => 'required|exists:jugadores,id',
-            'concepto'   => 'required|string|max:255',
-            'importe'    => 'required|numeric|min:0',
-            'fecha_pago' => 'nullable|date',
-            'estado'     => 'required|in:pagado,pendiente,sin_pagar',
-        ]);
-
+        $validated = $request->validated();
         $validated['equipo_id'] = $equipo->id;
 
         Pago::create($validated);
 
-        return redirect()->route('pagos.index', $equipo)
+        return redirect()->route('pagos.listar', $equipo)
             ->with('success', 'Pago registrado correctamente.');
     }
 
-    public function edit(Equipo $equipo, Pago $pago): View
+    public function editar(Equipo $equipo, Pago $pago): View
     {
         $this->authorize('update', $equipo);
         if ($pago->equipo_id !== $equipo->id) {
@@ -85,28 +78,20 @@ class PagoController extends Controller
         return view('pagos.edit', compact('equipo', 'pago', 'jugadores'));
     }
 
-    public function update(Equipo $equipo, Pago $pago, Request $request): RedirectResponse
+    public function actualizar(Equipo $equipo, Pago $pago, UpdatePagoRequest $request): RedirectResponse
     {
         $this->authorize('update', $equipo);
         if ($pago->equipo_id !== $equipo->id) {
             abort(403);
         }
 
-        $validated = $request->validate([
-            'jugador_id' => 'required|exists:jugadores,id',
-            'concepto'   => 'required|string|max:255',
-            'importe'    => 'required|numeric|min:0',
-            'fecha_pago' => 'nullable|date',
-            'estado'     => 'required|in:pagado,pendiente,sin_pagar',
-        ]);
+        $pago->update($request->validated());
 
-        $pago->update($validated);
-
-        return redirect()->route('pagos.index', $equipo)
+        return redirect()->route('pagos.listar', $equipo)
             ->with('success', 'Pago actualizado correctamente.');
     }
 
-    public function destroy(Equipo $equipo, Pago $pago): RedirectResponse
+    public function eliminar(Equipo $equipo, Pago $pago): RedirectResponse
     {
         $this->authorize('update', $equipo);
         if ($pago->equipo_id !== $equipo->id) {
@@ -115,21 +100,22 @@ class PagoController extends Controller
 
         $pago->delete();
 
-        return redirect()->route('pagos.index', $equipo)
+        return redirect()->route('pagos.listar', $equipo)
             ->with('success', 'Pago eliminado correctamente.');
     }
 
-    public function updateCuota(Equipo $equipo, Request $request): RedirectResponse
-{
-    $this->authorize('update', $equipo);
+    public function actualizarCuota(Equipo $equipo, Request $request): RedirectResponse
+    {
+        $this->authorize('update', $equipo);
 
-    $request->validate([
-        'cuota' => 'required|numeric|min:0',
-    ]);
+        $request->validate([
+            'cuota' => 'required|numeric|min:0',
+        ]);
 
-    $equipo->update(['cuota' => $request->cuota]);
+        $equipo->update(['cuota' => $request->cuota]);
 
-    return redirect()->route('pagos.index', $equipo)
-        ->with('success', 'Cuota actualizada correctamente.');
+        return redirect()->route('pagos.listar', $equipo)
+            ->with('success', 'Cuota actualizada correctamente.');
+    }
 }
-}
+

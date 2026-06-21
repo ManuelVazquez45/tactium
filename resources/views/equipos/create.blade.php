@@ -11,7 +11,7 @@
                 <div class="px-4 py-5 sm:p-6">
                     @include('equipos.form', [
                         'method' => 'POST',
-                        'action' => route('equipos.store'),
+                        'action' => route('equipos.guardar'),
                         'equipo' => null,
                         'buttonText' => 'Crear Equipo'
                     ])

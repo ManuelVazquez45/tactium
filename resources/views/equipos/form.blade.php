@@ -43,7 +43,7 @@
         >
             {{ $buttonText ?? 'Guardar' }}
         </button>
-        <a href="{{ route('equipos.index') }}"
+        <a href="{{ route('equipos.listar') }}"
             class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 text-sm font-bold uppercase tracking-widest bg-white hover:bg-gray-50 transition-all shadow-sm">
             Cancelar
         </a>

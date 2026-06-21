@@ -26,7 +26,7 @@
                 <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-blue-500 opacity-30 group-hover:opacity-100 transition-opacity"></div>
 
                 <div class="p-8">
-                    <form method="POST" action="{{ route('jugadores.update', [$equipo, $jugador]) }}" class="space-y-6">
+                    <form method="POST" action="{{ route('jugadores.actualizar', [$equipo, $jugador]) }}" class="space-y-6">
                         @csrf
                         @method('PATCH')
 

@@ -35,7 +35,7 @@
                             <h3 class="text-lg font-bold text-gray-900 uppercase tracking-wider">¿Despliegue de nuevo escuadrón?</h3>
                             <p class="text-blue-600 text-sm mt-2 italic">Envía una solicitud para registrar tu equipo en el sistema principal.</p>
                         </div>
-                        <a href="{{ route('equipos.create') }}"
+                        <a href="{{ route('equipos.crear') }}"
                             class="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm whitespace-nowrap">
                             + Crear Equipo
                         </a>
@@ -51,7 +51,7 @@
 
                     <div class="p-8">
                         <h3 class="text-lg font-bold text-green-700 uppercase tracking-widest mb-6 flex items-center gap-3">
-                            👥 <span>Jugadores_Activos</span>
+                             <span>Jugadores_Activos</span>
                         </h3>
 
                         {{-- FORMULARIO INLINE AÑADIR JUGADOR --}}
@@ -64,7 +64,7 @@
                                     <a href="{{ route('entrenador.dashboard') }}" class="text-red-500 hover:text-red-700 text-xs font-bold tracking-widest uppercase">✕ Cerrar</a>
                                 </div>
 
-                                <form method="POST" action="{{ route('jugadores.store', $equipoSeleccionado) }}" class="space-y-6">
+                                <form method="POST" action="{{ route('jugadores.guardar', $equipoSeleccionado) }}" class="space-y-6">
                                     @csrf
 
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -165,11 +165,11 @@
                                                         <td class="px-4 py-4 text-gray-600 uppercase text-xs font-bold">{{ $jugador->posicion ?? 'N/A' }}</td>
                                                         <td class="px-4 py-4 text-right space-x-4">
                                                             @can('update', $equipo)
-                                                                <a href="{{ route('jugadores.edit', [$equipo, $jugador]) }}"
+                                                                <a href="{{ route('jugadores.editar', [$equipo, $jugador]) }}"
                                                                     class="text-green-600 hover:text-green-800 font-bold text-xs uppercase transition-colors">
                                                                     Modificar
                                                                 </a>
-                                                                <form action="{{ route('jugadores.destroy', [$equipo, $jugador]) }}"
+                                                                <form action="{{ route('jugadores.eliminar', [$equipo, $jugador]) }}"
                                                                     method="POST" style="display:inline"
                                                                     onsubmit="return confirm('¿Confirmar baja definitiva del efectivo?')">
                                                                     @csrf

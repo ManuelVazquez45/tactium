@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Editar Pago - {{ $equipo->nombre }}
             </h2>
-            <a href="{{ route('pagos.index', $equipo) }}" class="text-gray-600 hover:text-gray-900">← Volver</a>
+            <a href="{{ route('pagos.listar', $equipo) }}" class="text-gray-600 hover:text-gray-900">← Volver</a>
         </div>
     </x-slot>
 
@@ -12,7 +12,7 @@
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="px-4 py-5 sm:p-6">
-                    <form method="POST" action="{{ route('pagos.update', [$equipo, $pago]) }}" class="space-y-6">
+                    <form method="POST" action="{{ route('pagos.actualizar', [$equipo, $pago]) }}" class="space-y-6">
                         @csrf
                         @method('PATCH')
 
@@ -66,7 +66,7 @@
                             <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
                                 Guardar Cambios
                             </button>
-                            <a href="{{ route('pagos.index', $equipo) }}" class="inline-flex items-center px-4 py-2 bg-gray-600 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                            <a href="{{ route('pagos.listar', $equipo) }}" class="inline-flex items-center px-4 py-2 bg-gray-600 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
                                 Cancelar
                             </a>
                         </div>

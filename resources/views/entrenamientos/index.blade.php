@@ -8,7 +8,7 @@
             <nav class="flex mb-8 items-center space-x-2 text-xs uppercase tracking-widest text-gray-400">
                 <a href="{{ route('dashboard') }}" class="hover:text-blue-600 transition-colors">Tactium</a>
                 <span>/</span>
-                <a href="{{ route('equipos.show', $equipo) }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">{{ $equipo->nombre }}</a>
+                <a href="{{ route('equipos.ver', $equipo) }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">{{ $equipo->nombre }}</a>
                 <span>/</span>
                 <span class="text-gray-800 font-bold">Entrenamientos</span>
             </nav>
@@ -21,7 +21,7 @@
                     </h2>
                 </div>
                 @can('update', $equipo)
-                    <a href="{{ route('entrenamientos.create', $equipo) }}"
+                    <a href="{{ route('entrenamientos.crear', $equipo) }}"
                         class="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm whitespace-nowrap">
                         + Nuevo Entrenamiento
                     </a>
@@ -83,16 +83,16 @@
                                                 {{ Str::limit($entrenamiento->descripcion, 40) ?? '-' }}
                                             </td>
                                             <td class="py-5 text-right space-x-4">
-                                                <a href="{{ route('entrenamientos.show', [$equipo, $entrenamiento]) }}"
+                                                <a href="{{ route('entrenamientos.ver', [$equipo, $entrenamiento]) }}"
                                                     class="text-blue-600 hover:text-blue-800 font-bold text-xs uppercase transition-colors">
                                                     Ver
                                                 </a>
                                                 @can('update', $equipo)
-                                                    <a href="{{ route('entrenamientos.edit', [$equipo, $entrenamiento]) }}"
+                                                    <a href="{{ route('entrenamientos.editar', [$equipo, $entrenamiento]) }}"
                                                         class="text-green-600 hover:text-green-800 font-bold text-xs uppercase transition-colors">
                                                         Editar
                                                     </a>
-                                                    <form action="{{ route('entrenamientos.destroy', [$equipo, $entrenamiento]) }}"
+                                                    <form action="{{ route('entrenamientos.eliminar', [$equipo, $entrenamiento]) }}"
                                                         method="POST" style="display:inline"
                                                         onsubmit="return confirm('¿Está seguro?')">
                                                         @csrf
@@ -112,7 +112,7 @@
                     @endif
 
                     <div class="mt-8 pt-6 border-t border-gray-100">
-                        <a href="{{ route('equipos.show', $equipo) }}"
+                        <a href="{{ route('equipos.ver', $equipo) }}"
                             class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 text-xs font-bold uppercase tracking-widest bg-white hover:bg-gray-50 transition-all shadow-sm">
                             ← Volver al Equipo
                         </a>

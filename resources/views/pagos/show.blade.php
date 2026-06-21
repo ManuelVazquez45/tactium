@@ -8,7 +8,7 @@
             <nav class="flex mb-8 items-center space-x-2 text-xs uppercase tracking-widest text-gray-400">
                 <a href="{{ route('dashboard') }}" class="hover:text-blue-600 transition-colors">Tactium</a>
                 <span>/</span>
-                <a href="{{ route('pagos.index', $equipo) }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">Inscripciones</a>
+                <a href="{{ route('pagos.listar', $equipo) }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">Inscripciones</a>
                 <span>/</span>
                 <span class="text-gray-800 font-bold">{{ $jugador->nombre }} {{ $jugador->apellido }}</span>
             </nav>
@@ -20,7 +20,7 @@
                         Pagos <span class="text-blue-600">// {{ $jugador->nombre }} {{ $jugador->apellido }}</span>
                     </h2>
                 </div>
-                <a href="{{ auth()->user()->role === 'jugador' ? route('equipos.show', $equipo) : route('pagos.index', $equipo) }}"
+                <a href="{{ auth()->user()->role === 'jugador' ? route('equipos.ver', $equipo) : route('pagos.listar', $equipo) }}"
                     class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 text-xs font-bold uppercase tracking-widest bg-white hover:bg-gray-50 transition-all shadow-sm whitespace-nowrap">
                     ← Volver
                 </a>
@@ -62,7 +62,7 @@
                             Historial <span class="text-blue-600">// Pagos</span>
                         </h3>
                         @can('update', $equipo)
-                            <a href="{{ route('pagos.create', $equipo) }}"
+                            <a href="{{ route('pagos.crear', $equipo) }}"
                                 class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm">
                                 + Añadir Pago
                             </a>
@@ -100,9 +100,9 @@
                                             </td>
                                             <td class="py-5 text-right space-x-4">
                                                 @can('update', $equipo)
-                                                    <a href="{{ route('pagos.edit', [$equipo, $pago]) }}"
+                                                    <a href="{{ route('pagos.editar', [$equipo, $pago]) }}"
                                                         class="text-green-600 hover:text-green-800 font-bold text-xs uppercase transition-colors">Editar</a>
-                                                    <form action="{{ route('pagos.destroy', [$equipo, $pago]) }}" method="POST" class="inline" onsubmit="return confirm('¿Eliminar pago?')">
+                                                    <form action="{{ route('pagos.eliminar', [$equipo, $pago]) }}" method="POST" class="inline" onsubmit="return confirm('¿Eliminar pago?')">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit"

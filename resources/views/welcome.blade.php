@@ -17,7 +17,7 @@
 <body class="antialiased bg-[#0B1220]" x-data="{ open: false }">
 
     <!-- HEADER INTEGRADO -->
-    <header x-data="{ open: false }" class="relative min-h-screen flex flex-col overflow-hidden bg-[#0B1220]">
+    <header x-data="{ open: false, scrolled: false }" class="relative min-h-screen flex flex-col overflow-hidden bg-[#0B1220]">
         <div class="absolute inset-0 z-0">
             <img src="{{ asset('images/header_fondo.jpg') }}"
                 class="w-full h-full object-cover opacity-50 grayscale-[20%] brightness-[0.9] transition-all duration-700"
@@ -27,7 +27,7 @@
         </div>
 
         <!-- NAVEGACIÓN FIJA CON INTERCAMBIO DE LOGO DINÁMICO -->
-        <nav x-data="{ open: false, scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 50)"
+        <nav @scroll.window="scrolled = (window.pageYOffset > 50)"
             :class="scrolled ? 'bg-[#0B1220]/95 py-3 shadow-2xl' : 'bg-transparent py-6'"
             class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 transition-all duration-500 backdrop-blur-md border-b border-blue-500/10">
 
@@ -71,17 +71,53 @@
 
             <!-- CONTENEDOR DERECHA: Botones de Acción -->
             <div class="flex items-center space-x-6 font-oxanium">
+                <!-- BOTONES DESKTOP -->
                 <a href="{{ route('login') }}"
                     class="hidden sm:block text-[9px] font-bold uppercase tracking-[0.3em] transition-colors duration-500"
                     :class="scrolled ? 'text-slate-300 hover:text-blue-400' : 'text-[#0B1220] hover:text-blue-600'">
-                    Login
+                    Iniciar Sesión
                 </a>
                 <a href="{{ route('register') }}"
-                    class="group relative text-[9px] font-black uppercase tracking-[0.4em] bg-blue-600 text-white px-6 py-2 shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] transition-all">
+                    class="hidden sm:block group relative text-[9px] font-black uppercase tracking-[0.4em] bg-blue-600 text-white px-6 py-2 shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] transition-all">
+                    Registro
+                </a>
+
+                <!-- MENÚ HAMBURGUESA MÓVIL -->
+                <button @click="open = !open" class="sm:hidden p-2 text-blue-500 hover:text-blue-400 focus:outline-none transition-colors">
+                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path :class="{ 'hidden': open, 'inline-flex': !open }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{ 'hidden': !open, 'inline-flex': open }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- MENÚ MÓVIL DESPLEGABLE -->
+        <div x-show="open" x-transition class="sm:hidden fixed top-20 left-0 right-0 bg-[#0B1220]/95 backdrop-blur-xl border-b border-blue-500/20 z-40">
+            <div class="px-4 py-4 space-y-3 font-oxanium">
+                <a href="#inicio" @click="open = false"
+                    class="block text-xs font-bold uppercase tracking-[0.3em] text-blue-400 hover:text-blue-300 transition-colors py-2">
+                    Inicio
+                </a>
+                <a href="#funciones" @click="open = false"
+                    class="block text-xs font-bold uppercase tracking-[0.3em] text-blue-400 hover:text-blue-300 transition-colors py-2">
+                    Sistemas
+                </a>
+                <a href="#contacto" @click="open = false"
+                    class="block text-xs font-bold uppercase tracking-[0.3em] text-blue-400 hover:text-blue-300 transition-colors py-2">
+                    Contacto
+                </a>
+                <div class="border-t border-blue-500/10 my-2"></div>
+                <a href="{{ route('login') }}"
+                    class="block text-xs font-bold uppercase tracking-[0.3em] text-blue-400 hover:text-blue-300 transition-colors py-2">
+                    Iniciar Sesión
+                </a>
+                <a href="{{ route('register') }}"
+                    class="block text-xs font-black uppercase tracking-[0.4em] bg-blue-600 text-white px-4 py-2 text-center shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] transition-all">
                     Registro
                 </a>
             </div>
-        </nav>
+        </div>
 
         <!-- IMPORTANTE: Añade este margen al inicio de tu <header> para compensar la altura del nav fijo -->
         <div class="h-24" id="inicio"></div>

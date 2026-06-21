@@ -12,7 +12,7 @@ use Illuminate\View\View;
 
 class EquipoController extends Controller
 {
-    public function index(): View
+    public function listar(): View
     {
         $this->authorize('viewAny', Equipo::class);
         $query = Equipo::query();
@@ -25,27 +25,25 @@ class EquipoController extends Controller
         return view('equipos.index', compact('equipos'));
     }
 
-    public function create(): View
+    public function crear(): View
     {
         $this->authorize('create', Equipo::class);
-        
-        // Validar que el entrenador no tenga más de 1 equipo
+
         if (auth()->user()->role === 'entrenador') {
             $equipoExistente = Equipo::where('coach_id', auth()->id())->exists();
             if ($equipoExistente) {
                 abort(403, 'Ya tienes un equipo registrado. Solo puedes crear un equipo.');
             }
         }
-        
+
         return view('equipos.create');
     }
 
-    public function store(StoreEquipoRequest $request): RedirectResponse
+    public function guardar(StoreEquipoRequest $request): RedirectResponse
     {
         $user = auth()->user();
-        
-        // Limitar a 1 equipo por entrenador
-        if ($user->role === 'entrenador') {
+
+        if (auth()->user()->role === 'entrenador') {
             $equipoExistente = Equipo::where('coach_id', $user->id)->exists();
             if ($equipoExistente) {
                 return redirect()->back()
@@ -53,7 +51,7 @@ class EquipoController extends Controller
                     ->with('error', 'Ya tienes un equipo registrado. Solo puedes crear un equipo.');
             }
         }
-        
+
         $equipo = Equipo::create([
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
@@ -61,42 +59,42 @@ class EquipoController extends Controller
             'estado' => 'pendiente',
         ]);
 
-        return redirect()->route('equipos.show', $equipo)
+        return redirect()->route('equipos.ver', $equipo)
             ->with('success', 'Solicitud de equipo enviada. Espera la aprobación del administrador.');
     }
 
-    public function show(Equipo $equipo): View
+    public function ver(Equipo $equipo): View
     {
         $this->authorize('view', $equipo);
         $jugadores = $equipo->jugadores()->get();
         return view('equipos.show', compact('equipo', 'jugadores'));
     }
 
-    public function edit(Equipo $equipo): View
+    public function editar(Equipo $equipo): View
     {
         $this->authorize('update', $equipo);
         return view('equipos.edit', compact('equipo'));
     }
 
-    public function update(UpdateEquipoRequest $request, Equipo $equipo): RedirectResponse
+    public function actualizar(UpdateEquipoRequest $request, Equipo $equipo): RedirectResponse
     {
         $this->authorize('update', $equipo);
 
         $equipo->update($request->validated());
 
-        return redirect()->route('equipos.show', $equipo)->with('success', 'Equipo actualizado exitosamente.');
+        return redirect()->route('equipos.ver', $equipo)->with('success', 'Equipo actualizado exitosamente.');
     }
 
-    public function destroy(Equipo $equipo): RedirectResponse
+    public function eliminar(Equipo $equipo): RedirectResponse
     {
         $this->authorize('delete', $equipo);
 
         $equipo->delete();
 
-        return redirect()->route('equipos.index')->with('success', 'Equipo eliminado exitosamente.');
+        return redirect()->route('equipos.listar')->with('success', 'Equipo eliminado exitosamente.');
     }
 
-    public function pendentes(): View
+    public function pendientes(): View
     {
         $this->authorize('viewAny', Equipo::class);
 
@@ -104,11 +102,11 @@ class EquipoController extends Controller
             abort(403, 'No tienes permiso para ver las solicitudes pendientes.');
         }
 
-        $pendentes = Equipo::where('estado', 'pendiente')->paginate(10);
-        return view('equipos.pendentes', compact('pendentes'));
+        $pendientes = Equipo::where('estado', 'pendiente')->paginate(10);
+        return view('equipos.pendientes', compact('pendientes'));
     }
 
-    public function approve(Equipo $equipo): RedirectResponse
+    public function aprobar(Equipo $equipo): RedirectResponse
     {
         $this->authorize('viewAny', Equipo::class);
 
@@ -120,7 +118,7 @@ class EquipoController extends Controller
         return redirect()->back()->with('success', "Equipo '{$equipo->nombre}' aprobado correctamente.");
     }
 
-    public function reject(Equipo $equipo): RedirectResponse
+    public function rechazar(Equipo $equipo): RedirectResponse
     {
         $this->authorize('viewAny', Equipo::class);
 
@@ -132,7 +130,7 @@ class EquipoController extends Controller
         return redirect()->back()->with('success', "Equipo '{$equipo->nombre}' rechazado.");
     }
 
-    public function search()
+    public function buscar()
     {
         $this->authorize('viewAny', Equipo::class);
 
@@ -161,3 +159,4 @@ class EquipoController extends Controller
         return response()->json($equipos);
     }
 }
+

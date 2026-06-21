@@ -8,7 +8,7 @@
             <nav class="flex mb-6 items-center space-x-2 text-xs uppercase tracking-widest text-gray-400">
                 <a href="{{ route('dashboard') }}" class="hover:text-blue-600 transition-colors">Tactium</a>
                 <span>/</span>
-                <a href="{{ route('equipos.index') }}" class="hover:text-blue-600 transition-colors text-blue-600 font-bold">Equipos</a>
+                <a href="{{ route('equipos.listar') }}" class="hover:text-blue-600 transition-colors text-blue-600 font-bold">Equipos</a>
                 <span>/</span>
                 <span class="text-gray-800 font-bold">Editar</span>
             </nav>
@@ -28,7 +28,7 @@
                 <div class="p-8">
                     @include('equipos.form', [
                         'method' => 'PUT',
-                        'action' => route('equipos.update', $equipo),
+                        'action' => route('equipos.actualizar', $equipo),
                         'equipo' => $equipo,
                         'buttonText' => 'Actualizar Equipo'
                     ])

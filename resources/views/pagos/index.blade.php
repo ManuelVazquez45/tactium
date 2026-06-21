@@ -21,7 +21,7 @@
                     </h2>
                     <p class="text-xs text-gray-400 uppercase tracking-widest mt-1">Gestión económica del equipo</p>
                 </div>
-                <a href="{{ route('pagos.create', $equipo) }}"
+                <a href="{{ route('pagos.crear', $equipo) }}"
                     class="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm whitespace-nowrap">
                     + Nuevo Pago
                 </a>
@@ -49,7 +49,7 @@
                         <p class="text-4xl font-black text-blue-600">{{ number_format($equipo->cuota, 2) }} <span class="text-2xl">€</span></p>
                     </div>
 
-                    <form method="POST" action="{{ route('pagos.cuota', $equipo) }}" class="mt-6 flex flex-col sm:flex-row items-end gap-4">
+                    <form method="POST" action="{{ route('pagos.actualizarCuota', $equipo) }}" class="mt-6 flex flex-col sm:flex-row items-end gap-4">
                         @csrf
                         @method('PATCH')
                         <div>
@@ -124,7 +124,7 @@
                                                 </div>
                                             </td>
                                             <td class="py-5 text-right">
-                                                <a href="{{ route('pagos.show', [$equipo, $jugador]) }}"
+                                                <a href="{{ route('pagos.ver', [$equipo, $jugador]) }}"
                                                     class="text-blue-600 hover:text-blue-800 font-bold text-xs uppercase transition-colors">
                                                     Ver detalles
                                                 </a>

@@ -8,7 +8,7 @@
             <nav class="flex mb-6 items-center space-x-2 text-xs uppercase tracking-widest text-gray-400">
                 <a href="{{ route('dashboard') }}" class="hover:text-blue-600 transition-colors">Tactium</a>
                 <span>/</span>
-                <a href="{{ route('entrenamientos.index', $equipo) }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">Entrenamientos</a>
+                <a href="{{ route('entrenamientos.listar', $equipo) }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">Entrenamientos</a>
                 <span>/</span>
                 <span class="text-gray-800 font-bold">Nuevo</span>
             </nav>
@@ -26,7 +26,7 @@
                 <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-blue-500 opacity-30 group-hover:opacity-100 transition-opacity"></div>
 
                 <div class="p-8">
-                    <form method="POST" action="{{ route('entrenamientos.store', $equipo) }}" class="space-y-6">
+                    <form method="POST" action="{{ route('entrenamientos.guardar', $equipo) }}" class="space-y-6">
                         @csrf
 
                         <div>
@@ -95,7 +95,7 @@
                                 class="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm">
                                 Crear Entrenamiento
                             </button>
-                            <a href="{{ route('entrenamientos.index', $equipo) }}"
+                            <a href="{{ route('entrenamientos.listar', $equipo) }}"
                                 class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 text-xs font-bold uppercase tracking-widest bg-white hover:bg-gray-50 transition-all shadow-sm">
                                 Cancelar
                             </a>

@@ -8,7 +8,7 @@
             <nav class="flex mb-8 items-center space-x-2 text-xs uppercase tracking-widest text-gray-400">
                 <a href="{{ route('dashboard') }}" class="hover:text-blue-600 transition-colors">Tactium</a>
                 <span>/</span>
-                <a href="{{ route('equipos.index') }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">Equipos</a>
+                <a href="{{ route('equipos.listar') }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">Equipos</a>
                 <span>/</span>
                 <span class="text-gray-800 font-bold">{{ $equipo->nombre }}</span>
             </nav>
@@ -21,7 +21,7 @@
                     </h2>
                 </div>
                 @if(auth()->user()->role === 'entrenador' && auth()->user()->id === $equipo->coach_id)
-                    <a href="{{ route('jugadores.create', $equipo) }}"
+                    <a href="{{ route('jugadores.crear', $equipo) }}"
                         class="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm whitespace-nowrap">
                         + Agregar Jugador
                     </a>

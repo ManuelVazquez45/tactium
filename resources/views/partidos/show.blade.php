@@ -8,7 +8,7 @@
             <nav class="flex mb-8 items-center space-x-2 text-xs uppercase tracking-widest text-gray-400">
                 <a href="{{ route('dashboard') }}" class="hover:text-blue-600 transition-colors">Tactium</a>
                 <span>/</span>
-                <a href="{{ route('partidos.index', $equipo) }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">Partidos</a>
+                <a href="{{ route('partidos.listar', $equipo) }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">Partidos</a>
                 <span>/</span>
                 <span class="text-gray-800 font-bold">Detalle</span>
             </nav>
@@ -20,7 +20,7 @@
                         Detalle <span class="text-blue-600">// Partido</span>
                     </h2>
                 </div>
-                <a href="{{ route('partidos.index', $equipo) }}"
+                <a href="{{ route('partidos.listar', $equipo) }}"
                     class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 text-xs font-bold uppercase tracking-widest bg-white hover:bg-gray-50 transition-all shadow-sm whitespace-nowrap">
                     ← Volver
                 </a>
@@ -100,11 +100,11 @@
                     <!-- Acciones -->
                     <div class="pt-6 border-t border-gray-100 flex flex-wrap gap-3">
                         @can('update', $equipo)
-                            <a href="{{ route('partidos.edit', [$equipo, $partido]) }}"
+                            <a href="{{ route('partidos.editar', [$equipo, $partido]) }}"
                                 class="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm">
                                 Editar
                             </a>
-                            <form action="{{ route('partidos.destroy', [$equipo, $partido]) }}" method="POST" onsubmit="return confirm('¿Eliminar partido?')">
+                            <form action="{{ route('partidos.eliminar', [$equipo, $partido]) }}" method="POST" onsubmit="return confirm('¿Eliminar partido?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
@@ -113,7 +113,7 @@
                                 </button>
                             </form>
                         @endcan
-                        <a href="{{ route('partidos.index', $equipo) }}"
+                        <a href="{{ route('partidos.listar', $equipo) }}"
                             class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 text-xs font-bold uppercase tracking-widest bg-white hover:bg-gray-50 transition-all shadow-sm">
                             Volver
                         </a>

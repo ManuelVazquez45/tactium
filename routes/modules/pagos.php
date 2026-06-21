@@ -3,11 +3,11 @@
 use App\Http\Controllers\PagoController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('equipos/{equipo}/pagos', [PagoController::class, 'index'])->name('pagos.index');
-Route::get('equipos/{equipo}/pagos/create', [PagoController::class, 'create'])->name('pagos.create');
-Route::post('equipos/{equipo}/pagos', [PagoController::class, 'store'])->name('pagos.store');
-Route::get('equipos/{equipo}/pagos/{pago}/edit', [PagoController::class, 'edit'])->name('pagos.edit');
-Route::patch('equipos/{equipo}/pagos/{pago}', [PagoController::class, 'update'])->name('pagos.update');
-Route::delete('equipos/{equipo}/pagos/{pago}', [PagoController::class, 'destroy'])->name('pagos.destroy');
-Route::get('equipos/{equipo}/pagos/{jugador}', [PagoController::class, 'show'])->name('pagos.show');
-Route::patch('equipos/{equipo}/cuota', [PagoController::class, 'updateCuota'])->name('pagos.cuota');
+Route::get('equipos/{equipo}/pagos', [PagoController::class, 'listar'])->name('pagos.listar');
+Route::get('equipos/{equipo}/pagos/crear', [PagoController::class, 'crear'])->name('pagos.crear');
+Route::post('equipos/{equipo}/pagos', [PagoController::class, 'guardar'])->name('pagos.guardar');
+Route::get('equipos/{equipo}/pagos/{pago}/editar', [PagoController::class, 'editar'])->name('pagos.editar');
+Route::put('equipos/{equipo}/pagos/{pago}', [PagoController::class, 'actualizar'])->name('pagos.actualizar');
+Route::delete('equipos/{equipo}/pagos/{pago}', [PagoController::class, 'eliminar'])->name('pagos.eliminar');
+Route::get('equipos/{equipo}/pagos/{jugador}', [PagoController::class, 'ver'])->name('pagos.ver');
+Route::patch('equipos/{equipo}/cuota', [PagoController::class, 'actualizarCuota'])->name('pagos.actualizarCuota');

@@ -7,7 +7,7 @@
             <nav class="flex mb-6 items-center space-x-2 text-xs uppercase tracking-widest text-gray-400">
                 <a href="{{ route('dashboard') }}" class="hover:text-blue-600 transition-colors">Tactium</a>
                 <span>/</span>
-                <a href="{{ route('equipos.index') }}" class="text-blue-600 font-bold">Equipos</a>
+                <a href="{{ route('equipos.listar') }}" class="text-blue-600 font-bold">Equipos</a>
             </nav>
 
             <!-- CABECERA -->
@@ -31,7 +31,7 @@
                 </div>
 
                 @can('create', App\Models\Equipo::class)
-                    <a href="{{ route('equipos.create') }}"
+                    <a href="{{ route('equipos.crear') }}"
                         class="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-sm font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm whitespace-nowrap">
                         + Crear Equipo
                     </a>
@@ -65,7 +65,7 @@
             });
 
             function fetchEquipos(query = '') {
-                fetch(`/equipos/search?q=${encodeURIComponent(query)}`, {
+                fetch(`/equipos/buscar?q=${encodeURIComponent(query)}`, {
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest',
                             'Accept': 'application/json'
@@ -107,7 +107,7 @@
 
                     if (equipo.can_update) {
                         accionesHtml +=
-                            `<a href="/equipos/${equipo.id}/edit" class="text-green-600 hover:text-green-800 transition-colors font-bold uppercase text-xs tracking-widest">Editar</a>`;
+                            `<a href="/equipos/${equipo.id}/editar" class="text-green-600 hover:text-green-800 transition-colors font-bold uppercase text-xs tracking-widest">Editar</a>`;
                     }
 
                     if (equipo.can_delete) {
@@ -155,8 +155,8 @@
                         return '<span class="inline-flex items-center px-3 py-1 border border-yellow-400 bg-yellow-50 text-xs font-bold text-yellow-700 uppercase tracking-widest">Pendiente</span>';
                     case 'aprobado':
                         return '<span class="inline-flex items-center px-3 py-1 border border-green-400 bg-green-50 text-xs font-bold text-green-700 uppercase tracking-widest">Aprobado</span>';
-                    case 'rechazado':
-                        return '<span class="inline-flex items-center px-3 py-1 border border-red-400 bg-red-50 text-xs font-bold text-red-700 uppercase tracking-widest">Rechazado</span>';
+                    case 'denegado':
+                        return '<span class="inline-flex items-center px-3 py-1 border border-red-400 bg-red-50 text-xs font-bold text-red-700 uppercase tracking-widest">Denegado</span>';
                     default:
                         return '';
                 }

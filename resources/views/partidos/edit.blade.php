@@ -8,7 +8,7 @@
             <nav class="flex mb-6 items-center space-x-2 text-xs uppercase tracking-widest text-gray-400">
                 <a href="{{ route('dashboard') }}" class="hover:text-blue-600 transition-colors">Tactium</a>
                 <span>/</span>
-                <a href="{{ route('partidos.index', $equipo) }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">Partidos</a>
+                <a href="{{ route('partidos.listar', $equipo) }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">Partidos</a>
                 <span>/</span>
                 <span class="text-gray-800 font-bold">Editar</span>
             </nav>
@@ -26,7 +26,7 @@
                 <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-blue-500 opacity-30 group-hover:opacity-100 transition-opacity"></div>
 
                 <div class="p-8">
-                    <form method="POST" action="{{ route('partidos.update', [$equipo, $partido]) }}" class="space-y-6">
+                    <form method="POST" action="{{ route('partidos.actualizar', [$equipo, $partido]) }}" class="space-y-6">
                         @csrf
                         @method('PATCH')
 
@@ -107,7 +107,7 @@
                                 class="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm">
                                 Guardar Cambios
                             </button>
-                            <a href="{{ route('partidos.index', $equipo) }}"
+                            <a href="{{ route('partidos.listar', $equipo) }}"
                                 class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 text-xs font-bold uppercase tracking-widest bg-white hover:bg-gray-50 transition-all shadow-sm">
                                 Cancelar
                             </a>

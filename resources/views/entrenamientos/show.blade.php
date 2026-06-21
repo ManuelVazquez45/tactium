@@ -8,7 +8,7 @@
             <nav class="flex mb-8 items-center space-x-2 text-xs uppercase tracking-widest text-gray-400">
                 <a href="{{ route('dashboard') }}" class="hover:text-blue-600 transition-colors">Tactium</a>
                 <span>/</span>
-                <a href="{{ route('entrenamientos.index', $equipo) }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">Entrenamientos</a>
+                <a href="{{ route('entrenamientos.listar', $equipo) }}" class="text-blue-600 font-bold hover:text-blue-800 transition-colors">Entrenamientos</a>
                 <span>/</span>
                 <span class="text-gray-800 font-bold">Detalle</span>
             </nav>
@@ -86,11 +86,11 @@
 
                     <!-- Acciones -->
                     <div class="flex flex-wrap gap-3 pt-4">
-                        <a href="{{ route('entrenamientos.edit', [$equipo, $entrenamiento]) }}"
+                        <a href="{{ route('entrenamientos.editar', [$equipo, $entrenamiento]) }}"
                             class="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-sm">
                             Editar
                         </a>
-                        <form action="{{ route('entrenamientos.destroy', [$equipo, $entrenamiento]) }}" method="POST" style="display:inline" onsubmit="return confirm('¿Está seguro de que desea eliminar este entrenamiento?')">
+                        <form action="{{ route('entrenamientos.eliminar', [$equipo, $entrenamiento]) }}" method="POST" style="display:inline" onsubmit="return confirm('¿Está seguro de que desea eliminar este entrenamiento?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit"
@@ -98,7 +98,7 @@
                                 Eliminar
                             </button>
                         </form>
-                        <a href="{{ route('entrenamientos.index', $equipo) }}"
+                        <a href="{{ route('entrenamientos.listar', $equipo) }}"
                             class="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 text-xs font-bold uppercase tracking-widest bg-white hover:bg-gray-50 transition-all shadow-sm">
                             Volver
                         </a>

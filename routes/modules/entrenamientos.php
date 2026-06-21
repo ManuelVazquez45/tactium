@@ -3,10 +3,10 @@
 use App\Http\Controllers\EntrenamientoController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('equipos/{equipo}/entrenamientos', [EntrenamientoController::class, 'index'])->name('entrenamientos.index');
-Route::get('equipos/{equipo}/entrenamientos/create', [EntrenamientoController::class, 'create'])->name('entrenamientos.create');
-Route::post('equipos/{equipo}/entrenamientos', [EntrenamientoController::class, 'store'])->name('entrenamientos.store');
-Route::get('equipos/{equipo}/entrenamientos/{entrenamiento}', [EntrenamientoController::class, 'show'])->name('entrenamientos.show');
-Route::get('equipos/{equipo}/entrenamientos/{entrenamiento}/edit', [EntrenamientoController::class, 'edit'])->name('entrenamientos.edit');
-Route::patch('equipos/{equipo}/entrenamientos/{entrenamiento}', [EntrenamientoController::class, 'update'])->name('entrenamientos.update');
-Route::delete('equipos/{equipo}/entrenamientos/{entrenamiento}', [EntrenamientoController::class, 'destroy'])->name('entrenamientos.destroy');
+Route::get('equipos/{equipo}/entrenamientos', [EntrenamientoController::class, 'listar'])->name('entrenamientos.listar');
+Route::get('equipos/{equipo}/entrenamientos/crear', [EntrenamientoController::class, 'crear'])->name('entrenamientos.crear');
+Route::post('equipos/{equipo}/entrenamientos', [EntrenamientoController::class, 'guardar'])->name('entrenamientos.guardar');
+Route::get('equipos/{equipo}/entrenamientos/{entrenamiento}', [EntrenamientoController::class, 'ver'])->name('entrenamientos.ver');
+Route::get('equipos/{equipo}/entrenamientos/{entrenamiento}/editar', [EntrenamientoController::class, 'editar'])->name('entrenamientos.editar');
+Route::put('equipos/{equipo}/entrenamientos/{entrenamiento}', [EntrenamientoController::class, 'actualizar'])->name('entrenamientos.actualizar');
+Route::delete('equipos/{equipo}/entrenamientos/{entrenamiento}', [EntrenamientoController::class, 'eliminar'])->name('entrenamientos.eliminar');
