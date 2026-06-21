@@ -11,6 +11,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustProxies(at: '*');
+
         // Registro de alias de Middleware para control de acceso por equipo
         $middleware->alias([
             'equipo.aceptado' => \App\Http\Middleware\CheckEquipoAceptado::class,
