@@ -28,7 +28,7 @@
                 <div class="p-8">
                     <form method="POST" action="{{ route('jugadores.actualizar', [$equipo, $jugador]) }}" class="space-y-6">
                         @csrf
-                        @method('PATCH')
+                        @method('PUT')
 
                         <div>
                             <label for="nombre" class="block text-xs font-bold uppercase tracking-widest text-blue-600 italic mb-2">Nombre</label>

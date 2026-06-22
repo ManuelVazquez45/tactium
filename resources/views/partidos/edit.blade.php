@@ -28,7 +28,7 @@
                 <div class="p-8">
                     <form method="POST" action="{{ route('partidos.actualizar', [$equipo, $partido]) }}" class="space-y-6">
                         @csrf
-                        @method('PATCH')
+                        @method('PUT')
 
                         <div class="grid grid-cols-2 gap-4">
                             <div>

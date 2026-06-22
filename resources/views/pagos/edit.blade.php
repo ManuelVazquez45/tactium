@@ -14,7 +14,7 @@
                 <div class="px-4 py-5 sm:p-6">
                     <form method="POST" action="{{ route('pagos.actualizar', [$equipo, $pago]) }}" class="space-y-6">
                         @csrf
-                        @method('PATCH')
+                        @method('PUT')
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Jugador</label>

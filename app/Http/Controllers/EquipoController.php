@@ -59,7 +59,7 @@ class EquipoController extends Controller
             'estado' => 'pendiente',
         ]);
 
-        return redirect()->route('equipos.ver', $equipo)
+        return redirect()->route('entrenador.dashboard')
             ->with('success', 'Solicitud de equipo enviada. Espera la aprobación del administrador.');
     }
 
