@@ -42,18 +42,6 @@
                     <x-input-error :messages="$errors->get('email')" class="mt-1 text-[10px] uppercase font-bold" />
                 </div>
 
-                <!-- Selección de Función (Rol) -->
-                <div class="space-y-1">
-                    <x-input-label for="role" :value="__('¿Cuál es tu función en el club?')" class="font-oxanium text-[10px] text-blue-400 uppercase tracking-widest" />
-                    <select id="role" name="role"
-                        class="block w-full bg-[#0B1220] border-white/10 text-white text-xs uppercase tracking-wider focus:border-blue-500 focus:ring-0 rounded-sm shadow-sm transition-all"
-                        required>
-                        <option value="entrenador" class="bg-[#0B1220]">Entrenador</option>
-                        <option value="player" class="bg-[#0B1220]">Jugador</option>
-                    </select>
-                    <x-input-error :messages="$errors->get('role')" class="mt-1 text-[10px] uppercase font-bold" />
-                </div>
-
                 <!-- Password -->
                 <div class="space-y-1">
                     <x-input-label for="password" :value="__('Password')" class="font-oxanium text-[10px] text-blue-400 uppercase tracking-widest" />

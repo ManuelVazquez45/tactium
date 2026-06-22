@@ -48,10 +48,9 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            // AUDITORÍA: Hardcodeamos el rol base. Todo registro público nace como jugador.
-            // *Nota: Verifica si en tu BD (migración) el enum es 'jugador' o 'player'.
-            // Si en BD dice 'player', cambia la palabra abajo.
-            'role' => 'jugador',
+            // Todos los registros públicos son entrenadores
+            // Los jugadores son creados por el entrenador en su equipo
+            'role' => 'entrenador',
             'email_verified_at' => now(),
         ]);
 
